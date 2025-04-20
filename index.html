@@ -7,22 +7,114 @@
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <style>
     body {
-      font-family: Arial, sans-serif;
-      text-align: center;
-      padding: 2rem;
+      margin: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(to right, #f4f6f9, #e0e7ef);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
     }
+
+    .chart-container {
+      background-color: white;
+      padding: 2rem;
+      border-radius: 15px;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+      max-width: 800px;
+      width: 100%;
+      text-align: center;
+    }
+
+    h2 {
+      margin-bottom: 0.5rem;
+      color: #2c3e50;
+    }
+
+    p.subtitle {
+      margin-top: 0;
+      margin-bottom: 2rem;
+      color: #7f8c8d;
+      font-size: 1rem;
+    }
+
     canvas {
-      max-width: 700px;
-      margin: 0 auto;
+      max-width: 100%;
     }
   </style>
 </head>
 <body>
 
-  <h2>Top 10 Countries by Population (2022)</h2>
-  <canvas id="populationChart"></canvas>
+  <div class="chart-container">
+    <h2>Top 10 Countries by Population</h2>
+    <p class="subtitle">(As of 2022, in billions)</p>
+    <canvas id="populationChart"></canvas>
+  </div>
 
   <script>
+    const ctx = document.getElementById('populationChart').getContext('2d');
+
+    const populationChart = new Chart(ctx, {
+      type: 'bar',
+      data: {
+        labels: [
+          'China', 'India', 'USA', 'Indonesia', 'Pakistan', 
+          'Brazil', 'Nigeria', 'Bangladesh', 'Russia', 'Mexico'
+        ],
+        datasets: [{
+          label: 'Population (in billions)',
+          data: [
+            1.412, 1.408, 0.331, 0.273, 0.231,
+            0.215, 0.213, 0.169, 0.144, 0.126
+          ],
+          backgroundColor: 'rgba(54, 162, 235, 0.7)',
+          borderColor: 'rgba(54, 162, 235, 1)',
+          borderWidth: 1,
+          hoverBackgroundColor: 'rgba(54, 162, 235, 0.9)',
+        }]
+      },
+      options: {
+        responsive: true,
+        plugins: {
+          legend: {
+            display: false
+          },
+          tooltip: {
+            callbacks: {
+              label: function(context) {
+                return `${context.dataset.label}: ${context.parsed.y.toFixed(3)}B`;
+              }
+            }
+          }
+        },
+        scales: {
+          y: {
+            beginAtZero: true,
+            title: {
+              display: true,
+              text: 'Population (Billions)'
+            },
+            ticks: {
+              stepSize: 0.2
+            },
+            grid: {
+              color: '#ecf0f1'
+            }
+          },
+          x: {
+            grid: {
+              display: false
+            }
+          }
+        }
+      }
+    });
+  </script>
+
+</body>
+</html>
+
     const ctx = document.getElementById('populationChart').getContext('2d');
 
     const populationChart = new Chart(ctx, {
